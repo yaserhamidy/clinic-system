@@ -8,14 +8,21 @@ use App\Models\transaction;
 class transactionController extends Controller
 {
     public function show(Request $request)
-{
-    $query = $request->get('query');
+    {
+        // Get the search query input for the date
+        $query = $request->get('query');
     
-    // Join transactions with accounts to get the account name
-    $transactions = transaction::leftJoin('accounts', 'transactions.account_id', '=', 'accounts.account_id')
-        ->select('transactions.*', 'accounts.account_name') // Adjust this to match your account name column
-        ->get();
+        // Perform the query on the transactions table, joining with the accounts table
+        $transactions = transaction::leftJoin('accounts', 'transactions.account_id', '=', 'accounts.account_id')
+            ->when($query, function ($q) use ($query) {
+                // Apply the search filter for the date field from the accounts table
+                return $q->whereDate('accounts.date', '=', $query);  // assuming the query is in the format 'YYYY-MM-DD'
+            })
+            ->select('transactions.*', 'accounts.date') // Selecting the necessary fields
+            ->get();
     
-    return view('dashboards.admins.transaction.transaction-show', compact('transactions'));
-}
+        // Return the view with the transactions data
+        return view('dashboards.admins.transaction.transaction-show', compact('transactions'));
+    }
+    
 }

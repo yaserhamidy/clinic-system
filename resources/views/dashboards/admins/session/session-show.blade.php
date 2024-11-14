@@ -23,6 +23,16 @@
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
+    <div class="card-body col-md-4">
+                            <form method="GET" action="{{ route('session-show') }}">
+                                <div class="input-group mb-3">
+                                    <input type="text" name="query" class="form-control" placeholder="جستجو بر اساس نام جلسه" value="{{ request()->get('query') }}">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">جستجو</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
     <!-- /.content-header -->
 
     <!-- Main content -->

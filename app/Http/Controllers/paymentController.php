@@ -11,16 +11,23 @@ use App\Models\transaction;
 class paymentController extends Controller
 {
     public function show(Request $request)
-{
-    $query = $request->input('query');
-
-    $payments = payment::leftJoin('patients', 'patients.patient_id', '=', 'payments.patient_id')
-    ->when($query, function ($q) use ($query) {
-        return $q->where('payments.payment_id', 'like', '%' . $query . '%');
-    })
-    ->select('payments.*', 'patients.patient_name as name')->get();
-    return view('dashboards.admins.payment.payment-show', compact('payments'));
-}
+    {
+        // Get the search query input
+        $query = $request->input('query');
+    
+        // Perform the search on the `payments` table, joining with the `patients` table
+        $payments = payment::leftJoin('patients', 'patients.patient_id', '=', 'payments.patient_id')
+            ->when($query, function ($q) use ($query) {
+                // Apply the search filter for the patient's name using the `like` operator
+                return $q->where('patients.patient_name', 'like', '%' . $query . '%');
+            })
+            ->select('payments.*', 'patients.patient_name as name') // Select payment columns along with patient's name
+            ->get();
+    
+        // Return the view with the payments data
+        return view('dashboards.admins.payment.payment-show', compact('payments'));
+    }
+    
 
    public function add()
  {

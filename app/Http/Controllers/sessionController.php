@@ -9,17 +9,23 @@ use App\Models\patient;
 class SessionController extends Controller
 {
     public function show(Request $request)
-{
-    $query = $request->input('query');
-
-    $sessions = session::leftJoin('patients', 'patients.patient_id', '=', 'sessions.patient_id')
-    ->when($query, function ($q) use ($query) {
-        return $q->where('sessions.session_name', 'like', '%' . $query . '%');
-    })
-    ->select('sessions.*', 'patients.patient_name as name')->get();
-    return view('dashboards.admins.session.session-show', compact('sessions'));
-}
-
+    {
+        // Get the search query input
+        $query = $request->input('query');
+    
+        // Perform the search on the `sessions` table, joining with the `patients` table
+        $sessions = session::leftJoin('patients', 'patients.patient_id', '=', 'sessions.patient_id')
+            ->when($query, function ($q) use ($query) {
+                // Apply the search filter for the patient's name using the `like` operator
+                return $q->where('patients.patient_name', 'like', '%' . $query . '%');
+            })
+            ->select('sessions.*', 'patients.patient_name as name') // Select session columns along with patient's name
+            ->get();
+    
+        // Return the view with the sessions data
+        return view('dashboards.admins.session.session-show', compact('sessions'));
+    }
+    
     public function add()
     {
         $patients = patient::all(); 

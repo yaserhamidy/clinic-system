@@ -22,6 +22,19 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
+
+    <div class="card-body col-md-4">
+        <form method="GET" action="">
+            <div class="input-group mb-3">
+                <input type="text" name="query" class="form-control" placeholder="جستجو بر اساس نام دارو فروخته شده" value="{{ request()->get('query') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">جستجو</button>
+                </div>
+            </div>
+        </form>
+        <a class=" btn btn-primary" href="{{ route('sell.create') }}">اضافه کردن فروش</a>
+    </div>
+
     <!-- /.content-header -->
 
     <!-- Main content -->
@@ -32,53 +45,58 @@
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
                     <div class="container">
-    <h1>لیست فروش</h1>
+                        
 
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>شماره فروش</th>
-                <th>نام دارو </th>
-                <th>اندازه فروش</th>
-                <th>تاریخ فروش</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($sales as $sale)
-                <tr>
-                    <td>{{ $sale->sell_id }}</td>
-                    <td>{{ $sale->medicine->medicine_name }}</td>
-                    <td>{{ $sale->quantity }}</td>
-                    <td>{{ $sale->sell_date->format('Y-m-d') }}</td>
-                    
-                    
-                    
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+                        <!-- Print Button -->
+                        <div class="mb-3">
+                            <button class="btn btn-outline-primary" onclick="printPage()">print</button>
+                        </div>
 
-    <a href="{{ route('sell.create') }}" class="btn btn-primary">اضافه کردن فروش</a>
-</div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>شماره فروش</th>
+                                    <th>نام دارو</th>
+                                    <th>اندازه فروش</th>
+                                    <th>تاریخ فروش</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sales as $sale)
+                                    <tr>
+                                        <td>{{ $sale->sell_id }}</td>
+                                        <td>{{ $sale->medicine->medicine_name }}</td>
+                                        <td>{{ $sale->quantity }}</td>
+                                        <td>{{ $sale->sell_date->format('Y-m-d') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
+                    </div>
                     <!-- ./col -->
                 </div>
             </div>
         </div>
     </section>
 </div>
+
+<script>
+    function printPage() {
+        window.print();
+    }
+</script>
 
 @endsection

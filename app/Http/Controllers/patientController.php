@@ -13,7 +13,7 @@ class patientController extends Controller
         $query = $request->input('query');
     
         // Only get patients with 'incomplete' status
-        $patients = Patient::leftJoin('doctors', 'doctors.doctor_id', '=', 'patients.doctor_id')
+        $patients = patient::leftJoin('doctors', 'doctors.doctor_id', '=', 'patients.doctor_id')
             ->when($query, function ($q) use ($query) {
                 return $q->where('patients.patient_name', 'like', '%' . $query . '%')
                          ->orWhere('doctors.doctor_name', 'like', '%' . $query . '%'); // Search by doctor's name
@@ -32,8 +32,7 @@ class patientController extends Controller
     public function addPatient(Request $request)
 {
     $request->validate([
-        'patient_name' => 'required|string|max:64',
-        'lastName' => 'required|string|max:64',
+    
         'age' => 'nullable|integer|min:0',
         'phone' => 'nullable|string|max:15',
         'address' => 'nullable|string',

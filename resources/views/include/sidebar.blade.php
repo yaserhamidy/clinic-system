@@ -267,7 +267,7 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a
-                   href="category-show" class="nav-link">
+                   href="medicineCategory-show" class="nav-link">
                     <i class="fa fa-circle-o nav-icon"></i>
                     <p>نمایش کتگوری دارو ها</p>
                   </a>

@@ -24,7 +24,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <div class="card-body col-md-4">
-                            <form method="GET" action="{{ route('madicineCategory-show') }}">
+                            <form method="GET" action="">
                                 <div class="input-group mb-3">
                                     <input type="text" name="query" class="form-control" placeholder="جستجو بر اساس نام کتگوری دارو" value="{{ request()->get('query') }}">
                                     <div class="input-group-append">
